@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 font-sans antialiased;
+  }
+}
+
+/* Custom scrollbars for data tables and panels */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Watermark pattern for Stage 3A client document pack */
+.rpm-watermark-overlay {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(6, 78, 134, 0.04) 0px,
+    rgba(6, 78, 134, 0.04) 150px,
+    rgba(237, 31, 36, 0.04) 150px,
+    rgba(237, 31, 36, 0.04) 300px
+  );
+}
+
+.rpm-gradient-header {
+  background: linear-gradient(135deg, #064E86 0%, #032B4A 100%);
+}
+
+.rpm-badge-adnoc {
+  @apply bg-emerald-50 text-emerald-700 border border-emerald-200;
+}
+
