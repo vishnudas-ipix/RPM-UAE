@@ -12,7 +12,8 @@ import {
   Layers,
   Sparkles,
   Search,
-  ExternalLink
+  ExternalLink,
+  FolderGit2
 } from 'lucide-react';
 import { UserRole, Emirate, ApprovalRequest, Ticket } from '../../types';
 
@@ -26,6 +27,7 @@ interface TopbarProps {
   onOpenApprovals: () => void;
   onOpenNotifications: () => void;
   onOpenSiteStaffView?: () => void;
+  onOpenPM?: () => void;
 }
 
 export const Topbar: React.FC<TopbarProps> = ({
@@ -38,6 +40,7 @@ export const Topbar: React.FC<TopbarProps> = ({
   onOpenApprovals,
   onOpenNotifications,
   onOpenSiteStaffView,
+  onOpenPM,
 }) => {
   const [showRoleMenu, setShowRoleMenu] = useState(false);
   const [showNotifMenu, setShowNotifMenu] = useState(false);
@@ -123,6 +126,19 @@ export const Topbar: React.FC<TopbarProps> = ({
               {pendingApprovals.length} Pending
             </span>
           </button>
+
+          {/* Project Management Module Switcher */}
+          {onOpenPM && (
+            <button
+              onClick={onOpenPM}
+              className="flex items-center space-x-1.5 bg-blue-700 hover:bg-blue-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-xs"
+              title="Switch to Standalone Project Management Module (/projects)"
+            >
+              <FolderGit2 className="w-3.5 h-3.5" />
+              <span>Project Mgmt</span>
+              <span className="text-[10px] bg-blue-900/60 text-blue-200 px-1.5 py-0.2 rounded font-mono">/projects</span>
+            </button>
+          )}
 
           {/* Notification Bell with Dropdown */}
           <div className="relative">

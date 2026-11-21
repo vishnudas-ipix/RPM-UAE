@@ -15,6 +15,7 @@ import { ComplianceDocumentView } from './components/compliance/ComplianceDocume
 import { TicketingHubView } from './components/ticketing/TicketingHubView';
 import { MasterDataHubView } from './components/masterdata/MasterDataHubView';
 import { SiteStaffPortalView } from './components/sitestaff/SiteStaffPortalView';
+import { PMModule } from './components/pm/PMModule';
 
 import {
   INITIAL_PROJECTS,
@@ -62,6 +63,29 @@ export function App() {
   // Selected Records for Deep Views
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [showInitiateModal, setShowInitiateModal] = useState(false);
+
+  // Standalone Project Management Route (/projects)
+  const [isPMRoute, setIsPMRoute] = useState(() => {
+    return typeof window !== 'undefined' && window.location.pathname.startsWith('/projects');
+  });
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setIsPMRoute(window.location.pathname.startsWith('/projects'));
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const handleOpenPM = () => {
+    window.history.pushState(null, '', '/projects');
+    setIsPMRoute(true);
+  };
+
+  const handleBackToOps = () => {
+    window.history.pushState(null, '', '/');
+    setIsPMRoute(false);
+  };
 
   // 24-hr countdown timer simulation
   useEffect(() => {
@@ -376,6 +400,14 @@ export function App() {
     setGeneralDocs([d, ...generalDocs]);
   };
 
+  if (isPMRoute) {
+    return (
+      <div className="h-screen w-screen overflow-hidden flex flex-col font-sans">
+        <PMModule onBackToOps={handleBackToOps} />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       {/* Topbar */}
@@ -392,6 +424,7 @@ export function App() {
           setCurrentRole('Site Staff (Field User)');
           setActiveTab('sitestaff');
         }}
+        onOpenPM={handleOpenPM}
       />
 
       <div className="flex-1 flex overflow-hidden">
@@ -405,6 +438,7 @@ export function App() {
           currentRole={currentRole}
           pendingApprovalsCount={approvals.filter((a) => a.status === 'Pending').length}
           openTicketsCount={tickets.filter((t) => t.currentStatus !== 'Closed' && t.currentStatus !== 'Resolved').length}
+          onOpenPM={handleOpenPM}
         />
 
         {/* Main Content Area */}

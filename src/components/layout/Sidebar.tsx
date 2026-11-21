@@ -16,7 +16,9 @@ import {
   Send,
   HelpCircle,
   Clock,
-  Sparkles
+  Sparkles,
+  FolderGit2,
+  ArrowUpRight
 } from 'lucide-react';
 import { UserRole } from '../../types';
 
@@ -40,6 +42,7 @@ interface SidebarProps {
   currentRole: UserRole;
   pendingApprovalsCount: number;
   openTicketsCount: number;
+  onOpenPM?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -48,6 +51,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   currentRole,
   pendingApprovalsCount,
   openTicketsCount,
+  onOpenPM,
 }) => {
   const isSiteStaffOnly = currentRole === 'Site Staff (Field User)';
 
@@ -224,6 +228,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
           );
         })}
       </nav>
+
+      {/* Standalone Project Management Switcher */}
+      {onOpenPM && (
+        <div className="px-3 pb-3 pt-1 border-t border-slate-800">
+          <button
+            onClick={onOpenPM}
+            className="w-full flex items-center justify-between p-2.5 rounded-lg bg-gradient-to-r from-blue-900/60 to-slate-800 border border-blue-500/40 text-white hover:border-blue-400 hover:from-blue-900/80 transition-all group shadow-sm text-left"
+            title="Open Standalone Project Management System (/projects)"
+          >
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded bg-blue-600 flex items-center justify-center shrink-0">
+                <FolderGit2 size={14} className="text-white" />
+              </div>
+              <div className="min-w-0">
+                <div className="text-xs font-bold flex items-center gap-1">
+                  <span>Project Mgmt</span>
+                  <span className="text-[9px] bg-blue-500/40 text-blue-200 px-1 py-0.2 rounded font-mono">/projects</span>
+                </div>
+                <div className="text-[10px] text-slate-400 truncate">Lifecycle System</div>
+              </div>
+            </div>
+            <ArrowUpRight size={14} className="text-slate-400 group-hover:text-white transition-colors shrink-0" />
+          </button>
+        </div>
+      )}
 
       {/* Bottom Legal / Cloud Compliance Status Footer */}
       <div className="p-3.5 border-t border-slate-800 bg-slate-950/40 text-[11px] text-slate-400 space-y-1">
